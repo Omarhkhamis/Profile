@@ -4,6 +4,9 @@ import { useRef } from "react";
 // EmailJS
 import emailjs from "@emailjs/browser";
 
+// Swal JS
+import Swal from "sweetalert2";
+
 // Icons
 import { BsArrowRight } from "react-icons/bs";
 
@@ -16,24 +19,31 @@ import { fadeIn } from "../../variants";
 const Contact = () => {
   // useRef
   const form = useRef();
+  const submitForm = () => {
+    form.submit();
+  };
 
   // Function send email
   const sendEmail = (e) => {
     e.preventDefault();
 
     emailjs
-      .sendForm("gmail", "template_jqzmr9e", form.current, {
-        publicKey: "zc9b2uWUxJxRGMOh8",
+      .sendForm("service_1dy7eq3", "template_jqzmr9e", form.current, {
+        publicKey: "b113b-QEx5bIZdu0x",
       })
       .then(
         () => {
+          Swal.fire({
+            title: "Thank You",
+            text: "We recived your message and we will back to you soon",
+            icon: "success",
+          });
           console.log("SUCCESS!");
         },
         (error) => {
           console.log("FAILED...", error.text);
         }
       );
-    e.target.reset();
   };
 
   return (
@@ -53,6 +63,7 @@ const Contact = () => {
           </motion.h2>
           {/* form */}
           <motion.form
+            id="myform"
             ref={form}
             onSubmit={sendEmail}
             variants={fadeIn("up", 0.4)}
@@ -89,6 +100,7 @@ const Contact = () => {
             ></textarea>
             <button
               type="submit"
+              form="myform"
               className="btn rounded-full border border-white/50 max-w-[170px] px-8 transition-all duration-300 flex items-center justify-center overflow-hidden hover:border-accent group"
             >
               <span className="group-hover:-translate-y-[120%] group-hover:opacity-0 transition-all duration-500">
